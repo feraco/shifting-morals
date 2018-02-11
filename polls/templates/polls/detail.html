@@ -1,0 +1,26 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+
+	<h1>{{ decision_group.scenario_text }}</h1>
+
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
+	{% csrf_token %}
+	{% for decision in decision_group.decision_set.all %}
+	    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}" />
+	    <label for="decision{{ forloop.counter }}">{{ decision.description }}</label>
+	    <p class="text-left">
+		    {% for person in decision.person_set.all %}
+				{{ person.get_gender_display }} -- {% if person.in_car %} In car {% elif person.following_law %} Following law {% else %} Not following the law {% endif %} -- 
+				{{ person.get_probability_display }} chance of death <br>
+		    {% endfor %}
+	    <p>
+	    <br />
+	{% endfor %}
+	<input type="submit" value="Vote" />
+	</form>
+	<br/>
+
+{% endblock %}

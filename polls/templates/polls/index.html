@@ -1,0 +1,15 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+      <h1 class="display-3">Who survives?</h1>
+      <p class="lead">Shifting Morals is a thought experiment inspired by <a href="http://moralmachine.mit.edu/"> MIT's Moral Machine</a>.
+      However, instead of determinstic outcomes, Shifting Morals posits that outcomes are probabilistic and that everything is up to chance.
+      We want to see how the introduction of chance influences morality.</p>
+      <p><a class="btn btn-lg btn-success" href="{% url 'polls:decision' %}"" role="button">Make your decisions</a></p>
+    </div>
+    <p class="lead text-justify">
+      Machine ethics is an important problem for the future of machine intelligence. As technology become more capable, humanity has to grapple with the ethical
+      decisions made therein. Shifting Morals aims to set us on the path of making the right decisions for a future we can all agree on.
+    </p>
+{% endblock %}

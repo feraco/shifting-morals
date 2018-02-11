@@ -1,0 +1,14 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+	<h1> Stats </h1>
+
+	<p> 
+		Your total kill count is {{ request.session.kill_count }}. <br>
+		Your passenger kill count is {{ request.session.passenger_kc }} while your non-passenger kill count is {{ request.session.non_passenger_kc }}. <br>
+		You've killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
+		The average age of the people you've killed is {{ request.session.avg_age }}. <br>
+	</p>
+
+	<a href="{% url 'polls:decision' %}">Back to decisions</a>
+{% endblock %}

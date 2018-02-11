@@ -1,0 +1,17 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+	<h1>{{ decision_group.scenario_text }}</h1>
+
+	<p> Your total kill count is {{ request.session.kill_count }}. </p>
+
+	{% if request.session.killed_bool %} <p> Somebody died. {{ request.session.killed }} people died. </p> {% else %} <p> No one died. Hooray! </p>{% endif %}
+
+	<ul>
+	{% for decision in decision_group.decision_set.all %}
+	    <li>{{ decision.description }} -- {{ decision.votes }} vote{{ decision.votes|pluralize }}</li>
+	{% endfor %}
+	</ul>
+
+	<a href="{% url 'polls:decision' %}">Back to decisions</a>
+{% endblock %}

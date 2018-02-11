@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Shifting Morals</title>
+ 
+ 	  {% load static %}
+
+    <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="https://v4-alpha.getbootstrap.com/examples/narrow-jumbotron/narrow-jumbotron.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+    <link rel="icon" href="{% static 'polls/images/favicon3.ico' %}">
+ 
+</head>
+ 
+<body>
+
+    <!-- TODO: Add collapsing navbar for mobile -->
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'polls:index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'polls:decision' %}">Decisions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'polls:about' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'polls:contact' %}">Contact</a>
+            </li>
+          </ul>
+        </nav>
+        <h3>Shifting Morals</h3>
+      </div>
+
+      {% block content %}
+      {% endblock %}
+
+      <footer class="footer">
+        <p>&copy; Niall Dalton 2018 &middot; This website uses cookies.</p> 
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+  </body>
+</html>
