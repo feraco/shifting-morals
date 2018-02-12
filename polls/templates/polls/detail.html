@@ -1,8 +1,16 @@
 {% extends 'polls/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 	<h1>{{ decision_group.scenario_text }}</h1>
+
+	<p>
+		Make your decision below! Each choice has different outcomes, with the bottom word describing that person's chance of dying.
+	</p>
+
+	<br>
 
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
@@ -10,16 +18,63 @@
 	{% csrf_token %}
 	{% for decision in decision_group.decision_set.all %}
 	    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}" />
-	    <label for="decision{{ forloop.counter }}">{{ decision.description }}</label>
+	    <label for="decision{{ forloop.counter }}">{{ forloop.counter }}. {{ decision.description }}</label>
 	    <p class="text-left">
-		    {% for person in decision.person_set.all %}
-				{{ person.get_gender_display }} -- {% if person.in_car %} In car {% elif person.following_law %} Following law {% else %} Not following the law {% endif %} -- 
-				{{ person.get_probability_display }} chance of death <br>
-		    {% endfor %}
+		    <div class="container">
+			  <div class="row">
+			    <div class="col-sm">
+			      	<div class="row">
+			      		<strong>In car:</strong>
+					    {% for person in decision.person_set.all %}
+					    	{% if person.in_car %}
+					    		<div class="col-sm"> 
+							    	{% if person.gender == 'M' %}
+								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
+							    	{% elif person.gender == 'F' %} 
+								    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
+							    	{% endif %}
+							    	<br>
+								    {{ person.get_gender_display }}
+								    <br>
+								    Age {{ person.age }}
+								    <br>
+								    {{ person.get_probability_display }}
+						    	</div>
+						    {% endif %}
+					    {% endfor %}
+				    </div>
+			    </div>
+
+			    <div class="col-sm">
+			      	<div class="row">
+			      		<strong>Not in car:</strong>
+					    {% for person in decision.person_set.all %}
+					    	{% if not person.in_car %}
+					    		<div class="col-sm"> 
+							    	{% if person.gender == 'M' %}
+								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
+							    	{% elif person.gender == 'F' %} 
+								    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
+							    	{% endif %}
+							    	<br>
+								    {{ person.get_gender_display }}
+								    <br>
+								    Age {{ person.age }}
+								    <br>
+								    {{ person.get_probability_display }}
+						    	</div>
+						    {% endif %}
+					    {% endfor %}
+				    </div>
+			    </div>
+			  </div>
+			</div>
+		    
 	    <p>
 	    <br />
+	    <hr><hr>
 	{% endfor %}
-	<input type="submit" value="Vote" />
+	<input type="submit" value="Decide" />
 	</form>
 	<br/>
 

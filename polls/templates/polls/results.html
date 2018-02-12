@@ -5,7 +5,16 @@
 
 	<p> Your total kill count is {{ request.session.kill_count }}. </p>
 
-	{% if request.session.killed_bool %} <p> Somebody died. {{ request.session.killed }} people died. </p> {% else %} <p> No one died. Hooray! </p>{% endif %}
+	{% if request.session.killed_bool %} 
+		<p> Somebody died. 
+		{% if request.session.killed == 1 %}
+			{{ request.session.killed }} person died. </p>
+		{% else %}
+			 {{ request.session.killed }} people died. </p>
+		{% endif %}
+	{% else %} 
+		<p> No one died. Hooray! </p>
+	{% endif %}
 
 	<ul>
 	{% for decision in decision_group.decision_set.all %}
