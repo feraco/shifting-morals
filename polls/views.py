@@ -101,7 +101,7 @@ def vote(request, decision_group_id):
                 else:
                     request.session["non_passenger_kc"] += 1
 
-        if request.session["avg_age"] is not None:
+        if len(request.session["age"]) != 0:
             request.session["avg_age"] = sum(request.session["age"])/len(request.session["age"])
         else:
             request.session["avg_age"] = 0
