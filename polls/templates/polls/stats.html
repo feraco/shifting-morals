@@ -1,7 +1,7 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-	<h1> Stats </h1>
+	<h1 class="text-center p-4"> Stats </h1>
 
 	{% if request.session.passenger_kc %}
 		<p> 
@@ -17,4 +17,5 @@
 	{% endif %}
 
 	<a href="{% url 'polls:decision' %}">Back to decisions</a>
+	<br><br>
 {% endblock %}

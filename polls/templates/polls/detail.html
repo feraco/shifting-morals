@@ -7,7 +7,8 @@
 	<h1>{{ decision_group.scenario_text }}</h1>
 
 	<p>
-		Make your decision below! Each choice has different outcomes, with the bottom word describing that person's chance of dying.
+		Make your decision below. Each choice has different outcomes and possibilities. Be sure to take into the chance of death
+		for each person when making your decisions.
 	</p>
 
 	<br>
@@ -17,39 +18,16 @@
 	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
 	{% csrf_token %}
 	{% for decision in decision_group.decision_set.all %}
+		<hr>
 	    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}" />
 	    <label for="decision{{ forloop.counter }}">{{ forloop.counter }}. {{ decision.description }}</label>
 	    <p class="text-left">
 		    <div class="container">
 			  <div class="row">
-			    <div class="col-sm">
-			      	<div class="row">
-			      		<strong>In car:</strong>
-					    {% for person in decision.person_set.all %}
-					    	{% if person.in_car %}
-					    		<div class="col-sm"> 
-							    	{% if person.gender == 'M' %}
-								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
-							    	{% elif person.gender == 'F' %} 
-								    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
-							    	{% endif %}
-							    	<br>
-								    {{ person.get_gender_display }}
-								    <br>
-								    Age {{ person.age }}
-								    <br>
-								    {{ person.get_probability_display }}
-						    	</div>
-						    {% endif %}
-					    {% endfor %}
-				    </div>
-			    </div>
 
-			    <div class="col-sm">
 			      	<div class="row">
-			      		<strong>Not in car:</strong>
+			      		<strong>Who could die:</strong>
 					    {% for person in decision.person_set.all %}
-					    	{% if not person.in_car %}
 					    		<div class="col-sm"> 
 							    	{% if person.gender == 'M' %}
 								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
@@ -59,20 +37,16 @@
 							    	<br>
 								    {{ person.get_gender_display }}
 								    <br>
-								    Age {{ person.age }}
+								    {{ person.get_age_display }}
 								    <br>
 								    {{ person.get_probability_display }}
 						    	</div>
-						    {% endif %}
 					    {% endfor %}
 				    </div>
-			    </div>
-			  </div>
+			    
 			</div>
-		    
 	    <p>
-	    <br />
-	    <hr><hr>
+	    <br>
 	{% endfor %}
 	<input type="submit" value="Decide" />
 	</form>

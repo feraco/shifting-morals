@@ -1,22 +1,30 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-	<h1> Decisions </h1>
+	<h1 class="text-center p-4"> Decisions </h1>
 
-	<p>
-		Choose a decision to make here. You can complete your decisions in any order, and be sure to click on stats below after you're done!
+	<p class="text-justify">
+		Choose a decision to make here. You can complete your decisions in any order, and be sure to click on stats below after you've made a few decisions. The stats page will help you understand your decisions and their outcomes.
 	</p>
 
-	{% if decisions_list %}
-	  <ul>
-	  {% for decision_group in decisions_list %}
-	      <li><a href="{% url 'polls:detail' decision_group.id %}">{{ decision_group.scenario_text }}</a></li>
-	  {% endfor %}
-	  </ul>
-	{% else %}
-	  <p>No polls are available.</p>
-	{% endif %}
+	<div class="row">
+        <div class="col-4 mx-auto">
 
-	<a href="{% url 'polls:stats' %}"><button type="button" class="btn btn-success">Stats</button></a>
+			{% if decisions_list %}
+			  <ul>
+			  {% for decision_group in decisions_list %}
+			      <li><a href="{% url 'polls:detail' decision_group.id %}">{{ decision_group.scenario_text }}</a></li>
+			  {% endfor %}
+			  </ul>
+			{% else %}
+			  <p>No polls are available.</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="text-center">
+		<a href="{% url 'polls:stats' %}"><button type="button" class="btn btn-success">Stats</button></a>
+	</div>
+	
 	<br><br>
 {% endblock %}

@@ -5,12 +5,12 @@ from .models import *
 
 class PersonInline(admin.TabularInline):
     model = Person
-    extra = 1
+    extra = 0
 
 
 class DecisionInline(admin.TabularInline):
     model = Decision
-    extra = 1
+    extra = 0
 
 
 class DecisionAdmin(admin.ModelAdmin):
