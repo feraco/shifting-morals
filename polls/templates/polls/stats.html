@@ -1,21 +1,42 @@
 {% extends 'polls/base.html' %}
-
+{% load staticfiles %}
 {% block content %}
-	<h1 class="text-center p-4"> Stats </h1>
+	<div class="content-container container">
+		<h1 class="text-center p-4"> Stats </h1>
 
-	{% if request.session.passenger_kc %}
-		<p> 
-			Your total kill count is {{ request.session.kill_count }}. <br>
-			Your passenger kill count is {{ request.session.passenger_kc }} while your non-passenger kill count is {{ request.session.non_passenger_kc }}. <br>
-			You've killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
-			The average age of the people you've killed is {{ request.session.avg_age|floatformat }}. <br>
-		</p>
-	{% else %}
-		<p> 
-			No stats recorded yet! Make your first decision.
-		</p>
-	{% endif %}
+		{% if request.session.kill_count %}
+			<p> 
+				Your total kill count is {{ request.session.kill_count }}. <br>
+				You've killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
+				You kill {{ request.session.most_killed_age }}s the most often. <br>
+				{{ request.session.social_preference }} <br>
+			</p>
 
-	<a href="{% url 'polls:decision' %}">Back to decisions</a>
-	<br><br>
+			<h4 class="text-center p-4"> Kills per Decision </h4>
+
+		{% else %}
+			<p> 
+				No stats recorded yet! Make your first decision.
+			</p>
+		{% endif %}
+
+		<!-- {{ request.session.test }} <br> {{ request.session.test2 }} <br> -->
+
+
+		<canvas id="myChart" width="500" height="400"></canvas>
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        <script type="text/javascript">
+            $.get('{% url "polls:line_chart_json" %}', function(data) {
+                var ctx = $("#myChart").get(0).getContext("2d");
+                new Chart(ctx, {
+                    type: 'line', data: data
+                });
+            });
+        </script>
+
+		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to decisions</a></div>
+		<br>
+	</div>
 {% endblock %}

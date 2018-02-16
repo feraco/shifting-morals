@@ -4,9 +4,9 @@
 
 {% block content %}
 
-	<h1>{{ decision_group.scenario_text }}</h1>
+	<h1 class="text-center p-3">{{ decision_group.scenario_text }}</h1>
 
-	<p>
+	<p class="text-justify">
 		Make your decision below. Each choice has different outcomes and possibilities. Be sure to take into the chance of death
 		for each person when making your decisions.
 	</p>
@@ -18,17 +18,25 @@
 	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
 	{% csrf_token %}
 	{% for decision in decision_group.decision_set.all %}
-		<hr>
+		    <hr>
 	    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}" />
-	    <label for="decision{{ forloop.counter }}">{{ forloop.counter }}. {{ decision.description }}</label>
+	    <label for="decision{{ forloop.counter }}" class="lead">{{ forloop.counter }}. {{ decision.description }}</label>
 	    <p class="text-left">
 		    <div class="container">
 			  <div class="row">
-
+			    <div class="col-sm">
 			      	<div class="row">
-			      		<strong>Who could die:</strong>
+			      		<strong style="color:green;">Legend:</strong><br>
+			      		<div class="col-5-sm" style="color:green;">
+			      			<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60"> <br>
+			      			Gender: <br>
+			      			Age: <br>
+			      			Chance of death: <br>
+			      			Social status:
+			      		</div>
+			      		<strong style="color:#0066ff;">Who could die:</strong>
 					    {% for person in decision.person_set.all %}
-					    		<div class="col-sm"> 
+					    		<div class="col-sm" style="color:#0066ff;"> 
 							    	{% if person.gender == 'M' %}
 								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
 							    	{% elif person.gender == 'F' %} 
@@ -40,15 +48,20 @@
 								    {{ person.get_age_display }}
 								    <br>
 								    {{ person.get_probability_display }}
+								    <br>
+								    {{ person.get_status_display }}
 						    	</div>
 					    {% endfor %}
 				    </div>
-			    
-			</div>
+			    </div>
+			  </div>
+			</div>		    
 	    <p>
-	    <br>
+	    <br />
+
 	{% endfor %}
-	<input type="submit" value="Decide" />
+	<br>
+	<div class="text-center"><input type="submit" value="Decide" /></div>
 	</form>
 	<br/>
 

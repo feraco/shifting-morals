@@ -12,6 +12,7 @@ class DecisionGroup(models.Model):
 class Decision(models.Model):
     decision_group = models.ForeignKey(DecisionGroup, on_delete=models.CASCADE)
     description = models.CharField(max_length=400)
+    
     votes = models.IntegerField(default=0)
     
     def __str__(self):

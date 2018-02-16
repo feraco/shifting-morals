@@ -1,26 +1,28 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-	<h1>{{ decision_group.scenario_text }}</h1>
+	<div class="content-container container">
+		<h1 class="text-center p-4">{{ decision_group.scenario_text }}</h1>
 
-	<p> Your total kill count is {{ request.session.kill_count }}. </p>
+		<p> Your total kill count is {{ request.session.kill_count }}. </p>
 
-	{% if request.session.killed_bool %} 
-		<p> Somebody died. 
-		{% if request.session.killed == 1 %}
-			{{ request.session.killed }} person died. </p>
-		{% else %}
-			 {{ request.session.killed }} people died. </p>
+		{% if request.session.killed_bool %} 
+			<p> Somebody died. 
+			{% if request.session.killed == 1 %}
+				{{ request.session.killed }} person died. </p>
+			{% else %}
+				 {{ request.session.killed }} people died. </p>
+			{% endif %}
+		{% else %} 
+			<p> No one died. Hooray! </p>
 		{% endif %}
-	{% else %} 
-		<p> No one died. Hooray! </p>
-	{% endif %}
 
-	<ul>
-	{% for decision in decision_group.decision_set.all %}
-	    <li>{{ decision.description }} -- {{ decision.votes }} vote{{ decision.votes|pluralize }}</li>
-	{% endfor %}
-	</ul>
+		<ul>
+		{% for decision in decision_group.decision_set.all %}
+		    <li>{{ decision.description }} -- {{ decision.votes }} vote{{ decision.votes|pluralize }}</li>
+		{% endfor %}
+		</ul>
 
-	<a href="{% url 'polls:decision' %}">Back to decisions</a>
+		<a href="{% url 'polls:decision' %}">Back to decisions</a>
+	</div>
 {% endblock %}

@@ -9,14 +9,6 @@ Check it out at https://shifting-morals.herokuapp.com/.
 
 # TODO
 
-* Add legend to detail page
-
-* Add plots to stats page
-
-* Add more color
-
-## Once done
-
-* Deploy with changes
+* Add more graphs
 
 * Add more scenarios
