@@ -70,7 +70,14 @@
 		    alert('Something went wrong: ' + err);
 		  } else {
 		    alert('Your query count: ' + data.query.count);
-		            	new Chart(document.getElementById("myChart"), {
+		            	
+
+
+		  }
+		});
+
+
+		new Chart(document.getElementById("myChart"), {
   type: 'line',
   data: {
     labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
@@ -109,11 +116,6 @@
     }
   }
 });
-
-
-		  }
-		});
-
         </script>
 
         <!-- <canvas id="line-chart" width="800" height="450"></canvas>
