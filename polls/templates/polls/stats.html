@@ -37,7 +37,6 @@
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script>
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script> -->
 
         <script type="text/javascript">
         var getJSON = function(url, callback) {
@@ -59,7 +58,6 @@
 		  if (err !== null) {
 		    alert('Something went wrong: ' + err);
 		  } else {
-		    alert('Your query count: ' + data);
 		    console.log(data)
 			obj = JSON.parse(data)
 		    new Chart(document.getElementById("myChart"), {
@@ -68,9 +66,7 @@
 			});
 		  }
 		});
-
-
-
+		
         </script>
 
 		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
