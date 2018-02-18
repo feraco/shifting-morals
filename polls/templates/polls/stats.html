@@ -30,12 +30,13 @@
 		{% endif %}
 
 		<!-- {{ request.session.test }} <br> {{ request.session.test2 }} <br> -->
+		{{ request.session.decisions_range }} <br> {{ request.session.kill_list }} <br>
 
 
 		<canvas id="myChart" width="500" height="400"></canvas>
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-        <!-- <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script> -->
+        <!-- <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script> -->?
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
         <script type="text/javascript">
             $.get('{% url "polls:line_chart_json" %}', function(data) {
