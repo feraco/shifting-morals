@@ -13,7 +13,7 @@
 	<div class="content-container container">
 		<h1 class="text-center p-4"> Stats </h1>
 
-		{% if request.session.kill_count %}
+		{% if request.session.num_decisions %}
 			<p> 
 				Your total kill count is {{ request.session.kill_count }}. <br>
 				You've killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
@@ -38,17 +38,8 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
         <!-- <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script> -->?
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-        <!-- <script type="text/javascript">
-            $.get('{% url "polls:line_chart_json" %}', function(data) {
-                var ctx = $("#myChart").get(0).getContext("2d");
-                new Chart(ctx, {
-                    type: 'line', data: data
-                });
-            });
-        </script> -->
-
         <script type="text/javascript">
-            $.get('https://shifting-morals.herokuapp.com/polls/line_chart_json', function(data) {
+            $.get('{% url "polls:line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
                 new Chart(ctx, {
                     type: 'line', data: data
@@ -57,7 +48,6 @@
         </script>
 
 
-        
         <canvas id="line-chart" width="800" height="450"></canvas>
         <script type="text/javascript">
         new Chart(document.getElementById("line-chart"), {
