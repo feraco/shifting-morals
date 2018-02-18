@@ -69,10 +69,12 @@
 		    alert('Something went wrong: ' + err);
 		  } else {
 		    alert('Your query count: ' + data);
-		    		new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: data
-});
+		    console.log(data)
+			obj = JSON.parse(data)
+		    new Chart(document.getElementById("myChart"), {
+				  type: 'line',
+				  data: obj
+			});
 		  }
 		});
 
