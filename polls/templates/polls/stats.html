@@ -35,7 +35,8 @@
 		<canvas id="myChart" width="500" height="400"></canvas>
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-        <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script>
+        <!-- <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
         <script type="text/javascript">
             $.get('{% url "polls:line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
@@ -46,7 +47,7 @@
         </script>
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        
         <canvas id="line-chart" width="800" height="450"></canvas>
         <script type="text/javascript">
         new Chart(document.getElementById("line-chart"), {
