@@ -4,10 +4,11 @@ from django.db import models
 from django.utils import timezone
 
 class DecisionGroup(models.Model):
-    scenario_text = models.CharField(max_length=400)
+    scenario_title = models.CharField(max_length=400)
+    scenario_description = models.CharField(max_length=400, default=None)
 
     def __str__(self):
-        return self.scenario_text
+        return self.scenario_title
 
 class Decision(models.Model):
     decision_group = models.ForeignKey(DecisionGroup, on_delete=models.CASCADE)

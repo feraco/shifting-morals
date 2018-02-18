@@ -1,9 +1,16 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-	<div class="content-container container">
-	    <h1 class="text-center p-4"> Contact </h1>
+	<nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Home</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Contact</li>
+	  </ol>
+	</nav>
 
+	<div class="content-container container">
+	    
+	    <h1 class="text-center p-4 display-4"> Contact </h1>
 	    <p class="text-justify">
 	    	Feel free to contact me through any of the methods below and take a look at my website if you're
 	    	curious to learn more about me. My website has some of the other projects I've done, some of which

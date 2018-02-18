@@ -1,10 +1,23 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-	<div class="content-container container">
-		<h1 class="text-center p-4">{{ decision_group.scenario_text }}</h1>
+	<nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a href="{% url 'polls:index' %}">Home</a></li>
+	    <li class="breadcrumb-item"><a href="{% url 'polls:decision' %}">Scenarios</a></li>
+	    <li class="breadcrumb-item"><a href="{% url 'polls:detail' decision_group.id %}">{{ decision_group.scenario_title }}</a></li>
+	    <li class="breadcrumb-item active" aria-current="page">Results</li>
+	  </ol>
+	</nav>
 
-		<p> Your total kill count is {{ request.session.kill_count }}. </p>
+	<div class="content-container container">
+		<h1 class="text-center p-4">{{ decision_group.scenario_title }}</h1>
+
+		<p>
+		{{ decision_group.scenario_description }}
+		</p>
+
+		
 
 		{% if request.session.killed_bool %} 
 			<p> Somebody died. 
@@ -23,6 +36,8 @@
 		{% endfor %}
 		</ul>
 
-		<a href="{% url 'polls:decision' %}">Back to decisions</a>
+		<p> Your total kill count is {{ request.session.kill_count }}. </p>
+
+		<a href="{% url 'polls:decision' %}">Back to scenarios</a>
 	</div>
 {% endblock %}

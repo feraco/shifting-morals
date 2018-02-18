@@ -1,9 +1,9 @@
 {% extends 'polls/base.html' %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron rounded bg-inverse text-white">
       <h1 class="display-3">Who survives?</h1>
-      <p class="lead">Shifting Morals is a thought experiment inspired by <a href="http://moralmachine.mit.edu/"> MIT's Moral Machine</a>.
+      <p class="lead">Shifting Morals is a thought experiment inspired by <a id="moral" href="http://moralmachine.mit.edu/"> MIT's Moral Machine</a>.
       However, instead of determinstic outcomes, Shifting Morals posits that outcomes are probabilistic and that everything is up to chance.
       The goal is to see how the introduction of chance influences morality.</p>
       <p><a class="btn btn-lg btn-success" href="{% url 'polls:decision' %}"" role="button">Make your decisions</a></p>

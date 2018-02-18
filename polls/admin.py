@@ -19,9 +19,9 @@ class DecisionAdmin(admin.ModelAdmin):
 
 class DecisionGroupAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['scenario_text']})    
+        (None,               {'fields': ['scenario_title', 'scenario_description']})    
     ]
-    search_fields = ['scenario_text']
+    search_fields = ['scenario_title']
     inlines = [DecisionInline]
 
 admin.site.register(Decision, DecisionAdmin)
