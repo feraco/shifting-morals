@@ -26,18 +26,21 @@
 	<br>
 
 	<div class="text-center">
-	<div class="col-5-sm" style="color:#0A5C0F;">
-		<strong style="color:#0A5C0F;">Legend</strong><br>
-		<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60"> <br>
-		Gender <br>
-		Age <br>
-		Chance of death <br>
-		Social status
-	</div></div>
+		<div class="col-5-sm" style="color:#0A5C0F;">
+			<strong style="color:#0A5C0F;">Legend</strong><br>
+			<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60"> <br>
+			Gender <br>
+			Age <br>
+			Chance of death <br>
+			Social status
+		</div>
+	</div>
 
-	<br>
+	<br><br>
 
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<h5>Choose the option below you think is best: </h2>
 
 	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
 	{% csrf_token %}
@@ -49,13 +52,14 @@
 		    <div class="container">
 			  <div class="row">
 
-			  <strong style="color:#006666;">Who could die:</strong>
+			  <!-- old color was #006666 -->
+			  <strong style="color:#0A5C0F;">Who could die:</strong>
 			    <div class="col-5-sm">
 			      	<div class="row">
 			      		
 			      		
 					    {% for person in decision.person_set.all %}
-					    		<div class="col-sm" style="color:#006666;"> 
+					    		<div class="col-sm" style="color:#0A5C0F;"> 
 							    	{% if person.gender == 'M' %}
 								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
 							    	{% elif person.gender == 'F' %} 
