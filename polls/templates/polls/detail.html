@@ -18,71 +18,75 @@
 		{{ decision_group.scenario_description }}
 	</p>
 
-	<p class="text-center">
-		Make your decision below. Each choice has different outcomes and possibilities. Be sure to take into the chance of death
-		for each person when making your decisions.
-	</p>
+	<!-- <p class="text-center">
+		Make your decision below. Each choice has different outcomes and possibilities. Be sure to take the chance of death
+		into account for each person when making your decisions.
+	</p> -->
 
 	<br>
 
-	<div class="text-center">
-		<div class="col-5-sm" style="color:#0A5C0F;">
-			<strong style="color:#0A5C0F;">Legend</strong><br>
-			<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60"> <br>
+	<div class="row">
+        <div class="col-2-sm mx-auto text-left" style="color:#0A5C0F;">
+            <div class="text-center">
+            <strong style="color:#0A5C0F;">Legend</strong><br>
+            <img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60" style="padding-left: 7px;"> <br>
+            </div>
 			Gender <br>
 			Age <br>
 			Chance of death <br>
 			Social status
-		</div>
-	</div>
+        </div>
+    </div>
 
 	<br><br>
 
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-	<h5>Choose the option below you think is best: </h2>
+	<h5>Choose the option below you think is best for the machine to take (hover to view): </h2>
 
 	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
 	{% csrf_token %}
 	{% for decision in decision_group.decision_set.all %}
-		    <hr>
-	    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}" />
-	    <label for="decision{{ forloop.counter }}" class="lead">{{ forloop.counter }}. {{ decision.description }}</label>
-	    <p class="text-left">
-		    <div class="container">
-			  <div class="row">
+		<div class="form__answer"> 
+			<hr>
+		    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}"/>
+		    <!-- Readd {{forloop.counter}}. in front of description? Not sure what looks better -->
+		    <label for="decision{{ forloop.counter }}" class="lead"> {{ decision.description }}
+		    <p class="text-left">
+			    <div class="container">
+				  <div class="row">
 
-			  <!-- old color was #006666 -->
-			  <strong style="color:#0A5C0F;">Who could die:</strong>
-			    <div class="col-5-sm">
-			      	<div class="row">
-			      		
-			      		
-					    {% for person in decision.person_set.all %}
-					    		<div class="col-sm" style="color:#0A5C0F;"> 
-							    	{% if person.gender == 'M' %}
-								    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
-							    	{% elif person.gender == 'F' %} 
-								    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
-							    	{% endif %}
-							    	<br>
-								    {{ person.get_gender_display }}
-								    <br>
-								    {{ person.get_age_display }}
-								    <br>
-								    {{ person.get_probability_display }}
-								    <br>
-								    {{ person.get_status_display }}
-						    	</div>
-					    {% endfor %}
+				  <!-- old color was #006666 -->
+				  <strong style="color:#0A5C0F;" class="ding font-weight-bold">Who could die:</strong>
+				    <div class="col-5-sm">
+				      	<div class="row">	
+						    {% for person in decision.person_set.all %}
+						    		<div class="col-sm ding" style="color:#0A5C0F;"> 
+								    	{% if person.gender == 'M' %}
+									    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
+								    	{% elif person.gender == 'F' %} 
+									    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
+								    	{% endif %}
+								    	<br>
+									    {{ person.get_gender_display }}
+									    <br>
+									    {{ person.get_age_display }}
+									    <br>
+									    {{ person.get_probability_display }}
+									    <br>
+									    {{ person.get_status_display }}
+							    	</div>
+						    {% endfor %}
+					    </div>
 				    </div>
-			    </div>
-			  </div>
-			</div>		    
-	    <p>
-	    <br />
+				  </div>
+				</div>
+		    <p>
+		    </label>
+	    </div> 
 
 	{% endfor %}
+
 	<br>
 	<div class="text-center"><input type="submit" value="Decide" class="btn btn-success"/></div>
 	</form>

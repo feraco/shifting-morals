@@ -9,3 +9,49 @@ a {
 #moral {
 	color: green;
 }
+
+.ding {
+	font-size: 16px !important;
+}
+
+/* Form Styles */
+/* Modified from Angela Velasquez */
+/* Copyright (c) 2018 by Angela Velasquez (https://codepen.io/AngelaVelasquez/pen/Eypnq) */
+/* TODO: Fix label opacity for mobile -- make it so it has no opacity but buttons instead? */
+
+label {
+	border: 0px solid rgba(10, 92, 15,0.8);
+	box-sizing: border-box;
+	display: block;
+	padding: 10px 10px 5px 10px;
+	cursor: pointer;
+	opacity: .5;
+	transition: all .5s ease-in-out;
+	&:hover, &:focus, &:active {
+		border: 0px solid rgba(10, 92, 15,0.8);
+	}
+}
+
+label:hover {
+	opacity: 1;
+}
+
+
+/* Input style */
+
+input[type="radio"] {
+	opacity: 0;
+	width: 0;
+  	height: 0;
+  	position: absolute;
+}
+
+input[type="radio"]:active ~ label {
+  opacity: 1;
+}
+
+input[type="radio"]:checked ~ label {
+  	opacity: 1;
+	border: 0px solid rgba(10, 92, 15,0.8);
+	color: #0A5C0F;
+}

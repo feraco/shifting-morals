@@ -10,6 +10,7 @@ class DecisionGroup(models.Model):
     def __str__(self):
         return self.scenario_title
 
+
 class Decision(models.Model):
     decision_group = models.ForeignKey(DecisionGroup, on_delete=models.CASCADE)
     description = models.CharField(max_length=400)
@@ -65,7 +66,7 @@ class Person(models.Model):
 
     STATUS_CHOICES = (
     ('C', 'Criminal'),
-    ('A', 'Average Worker'),
+    ('A', 'Worker'),
     ('D', 'Doctor')
     )
 

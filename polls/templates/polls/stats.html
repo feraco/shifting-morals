@@ -11,7 +11,7 @@
 	</nav>
 
 	<div class="content-container container">
-		<h1 class="text-center p-4"> Stats </h1>
+		<h1 class="text-center p-4"> Your Stats </h1>
 
 		{% if request.session.num_decisions %}
 			<p> 
@@ -23,51 +23,50 @@
 
 			<h4 class="text-center p-4"> Kills per Decision </h4>
 
+			<canvas id="myChart" width="500" height="400"></canvas>
+
+	        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+	        <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script>
+
+	        <script type="text/javascript">
+	        var getJSON = function(url, callback) {
+			    var xhr = new XMLHttpRequest();
+			    xhr.open('GET', url, true);
+			    xhr.onload = function() {
+			      var status = xhr.status;
+			      if (status === 200) {
+			        callback(null, xhr.response);
+			      } else {
+			        callback(status, xhr.response);
+			      }
+			    };
+			    xhr.send();
+			};
+
+			getJSON('{% url "polls:line_chart_json" %}',
+			function(err, data) {
+			  if (err !== null) {
+			    alert('Something went wrong: ' + err);
+			  } else {
+			    console.log(data)
+				obj = JSON.parse(data)
+			    new Chart(document.getElementById("myChart"), {
+					  type: 'line',
+					  data: obj
+				});
+			  }
+			});
+			
+	        </script>
+
 		{% else %}
-			<p> 
+			<p class="text-center"> 
 				No stats recorded yet! Make your first decision.
 			</p>
 		{% endif %}
 
 		<!-- {{ request.session.test }} <br> {{ request.session.test2 }} <br> -->
 		<!-- {{ request.session.decisions_range }} <br> {{ request.session.kill_list }} <br> -->
-
-
-		<canvas id="myChart" width="500" height="400"></canvas>
-
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-        <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script>
-
-        <script type="text/javascript">
-        var getJSON = function(url, callback) {
-		    var xhr = new XMLHttpRequest();
-		    xhr.open('GET', url, true);
-		    xhr.onload = function() {
-		      var status = xhr.status;
-		      if (status === 200) {
-		        callback(null, xhr.response);
-		      } else {
-		        callback(status, xhr.response);
-		      }
-		    };
-		    xhr.send();
-		};
-
-		getJSON('{% url "polls:line_chart_json" %}',
-		function(err, data) {
-		  if (err !== null) {
-		    alert('Something went wrong: ' + err);
-		  } else {
-		    console.log(data)
-			obj = JSON.parse(data)
-		    new Chart(document.getElementById("myChart"), {
-				  type: 'line',
-				  data: obj
-			});
-		  }
-		});
-		
-        </script>
 
 		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
 		<br>
