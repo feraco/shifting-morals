@@ -25,18 +25,41 @@
 
 	<br>
 
-	<div class="row">
-        <div class="col-2-sm mx-auto text-left" style="color:#0A5C0F;">
-            <div class="text-center">
-            <strong style="color:#0A5C0F;">Legend</strong><br>
-            <img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60" style="padding-left: 7px;"> <br>
-            </div>
-			Gender <br>
-			Age <br>
-			Chance of death <br>
-			Social status
-        </div>
-    </div>
+	{% if decision_group.scenario_type == 'I' %}
+
+		<div class="row">
+	        <div class="col-2-sm mx-auto text-left" style="color:#0A5C0F;">
+	            <div class="text-center">
+	            <strong style="color:#0A5C0F;">Legend</strong><br>
+	            <img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60" style="padding-left: 7px;"> <br>
+	            </div>
+				Gender <br>
+				Age <br>
+				Chance of death <br>
+				Social status
+	        </div>
+	    </div>
+
+	{% elif decision_group.scenario_type == 'L' %}
+
+		<!--<div class="row">
+	        <div class="col-2-sm mx-auto text-left" style="color:#0A5C0F;">
+	            <div class="text-center">
+	            <strong style="color:#0A5C0F;">Legend</strong><br>
+	            </div>
+				Description <br>
+				Predicted Number of Deaths <br>
+				Confidence in Predicted Number of Deaths <br>
+				Range of Possible Deaths <br>
+				Likelihood of Outcome Occuring
+	        </div>
+	    </div> -->
+
+	{% else %}
+
+		<strong>Error with scenario type</strong>
+
+	{% endif %}
 
 	<br><br>
 
@@ -44,52 +67,99 @@
 
 	<h5>Choose the option below you think is best for the machine to take (hover to view): </h2>
 
-	<form action="{% url 'polls:vote' decision_group.id %}" method="post">
-	{% csrf_token %}
-	{% for decision in decision_group.decision_set.all %}
-		<div class="form__answer"> 
-			<hr>
-		    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}"/>
-		    <!-- Readd {{forloop.counter}}. in front of description? Not sure what looks better -->
-		    <label for="decision{{ forloop.counter }}" class="lead"> {{ decision.description }}
-		    <p class="text-left">
-			    <div class="container">
-				  <div class="row">
+	<div class="choices">
+		<ul>
+		<form action="{% url 'polls:vote' decision_group.id %}" method="post">
+		{% csrf_token %}
+		{% for decision in decision_group.decision_set.all %}
+			<li> <!-- li goes here -->
+				<div class="form__answer"> 
+					<hr>
+				    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}"/>
+				    <!-- Readd {{forloop.counter}}. in front of description? Not sure what looks better -->
+				    <label for="decision{{ forloop.counter }}" class="lead"> {{ decision.description }}
+				    <p class="text-left">
+					    <div class="container">
+						  <div class="row">
 
-				  <!-- old color was #006666 -->
-				  <strong style="color:#0A5C0F;" class="ding font-weight-bold">Who could die:</strong>
-				    <div class="col-5-sm">
-				      	<div class="row">	
-						    {% for person in decision.person_set.all %}
-						    		<div class="col-sm ding" style="color:#0A5C0F;"> 
-								    	{% if person.gender == 'M' %}
-									    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
-								    	{% elif person.gender == 'F' %} 
-									    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
-								    	{% endif %}
-								    	<br>
-									    {{ person.get_gender_display }}
-									    <br>
-									    {{ person.get_age_display }}
-									    <br>
-									    {{ person.get_probability_display }}
-									    <br>
-									    {{ person.get_status_display }}
-							    	</div>
-						    {% endfor %}
-					    </div>
-				    </div>
-				  </div>
-				</div>
-		    <p>
-		    </label>
-	    </div> 
+						  	{% if decision_group.scenario_type == 'I' %}
 
-	{% endfor %}
+							  	<!-- old color was #006666 -->
+							  	<strong style="color:#0A5C0F;" class="regular font-weight-bold">Who could die:</strong>
+							    <div class="col-5-sm">
+							      	<div class="row">	
+									    {% for person in decision.person_set.all %}
+									    		<div class="col-sm regular" style="color:#0A5C0F;"> 
+											    	{% if person.gender == 'M' %}
+												    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
+											    	{% elif person.gender == 'F' %} 
+												    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
+											    	{% endif %}
+											    	<br>
+												    {{ person.get_gender_display }}
+												    <br>
+												    {{ person.get_age_display }}
+												    <br>
+												    {{ person.get_probability_display }}
+												    <br>
+												    {{ person.get_status_display }}
+										    	</div>
+									    {% endfor %}
+								    </div>
+							    </div>
 
-	<br>
-	<div class="text-center"><input type="submit" value="Decide" class="btn btn-success"/></div>
-	</form>
+						  	{% elif decision_group.scenario_type == 'L' %}
+
+						  		<strong style="color:#0A5C0F;" class="regular font-weight-bold">Possible Outcomes:</strong>
+						  		<div class="col-sm">
+							      	<div class="row">	
+									    {% for outcome in decision.outcome_set.all %}
+									    		<div class="col-sm regular" style="color:#0A5C0F;"> 
+											    	<strong class="font-weight-bold">{{ outcome.outcome_description }}</strong>
+											    	<hr>
+											    	{% if outcome.predicted_num_deaths > 100000 %}
+											    		{{ outcome.predicted_num_deaths |stringformat:".1e" }} deaths predicted
+											    	{% else %}
+											    		{{ outcome.predicted_num_deaths }} deaths predicted
+													{% endif %}
+											    	<br><br>
+											    	{{ outcome.get_confidence_display }} confidence in prediction
+											    	<br><br>
+											    	{% if outcome.min_value > 100000 %}
+											    		{{ outcome.min_value |stringformat:".1e"  }} - {{ outcome.max_value | stringformat:".1e"  }} possible deaths
+											    	{% else %}
+											    		{{ outcome.min_value  }} - {{ outcome.max_value  }} possible deaths
+											    	{% endif %}
+											    	<br><br>
+											    	{{ outcome.likelihood }}% Likelihood
+											    	<br><br>
+										    	</div>
+									    {% endfor %}
+								    </div>
+							    </div>
+
+						  	{% else %}
+
+						  		<strong>Error with scenario type</strong>
+
+						  	{% endif %}
+
+						  </div>
+						</div>
+				    </p>
+				    </label>
+				    <div class="check"></div>
+			    </div>
+		    </li>
+		{% endfor %}
+
+		<br>
+		<div class="text-center"><input type="submit" value="Decide" class="btn btn-success"/></div>
+		</form>
+		
+
+		<ul>
+	</div>
+
 	<br/>
-
 {% endblock %}

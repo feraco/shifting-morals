@@ -17,7 +17,11 @@
 		{{ decision_group.scenario_description }}
 		</p>
 
-		
+		{% if decision_group.scenario_type == 'L' %}
+
+			<strong>Outcome: </strong>{{ request.session.outcome }}<br><br>
+
+		{% endif %}
 
 		{% if request.session.killed_bool %} 
 			<p> Somebody died. 
@@ -25,6 +29,9 @@
 				{{ request.session.killed }} person died. </p>
 			{% else %}
 				 {{ request.session.killed }} people died. </p>
+			{% endif %}
+			{% if decision_group.scenario_type == 'L' %}
+				<p> You saved {{ request.session.saved }} lives. </p>
 			{% endif %}
 		{% else %} 
 			<p> No one died. Hooray! </p>
@@ -36,8 +43,16 @@
 		{% endfor %}
 		</ul>
 
-		<p> Your total kill count is {{ request.session.kill_count }}. </p>
+		{% if decision_group.scenario_type == 'L' %}
 
-		<a href="{% url 'polls:decision' %}">Back to scenarios</a>
+			<p> Your total group kill count is {{ request.session.group_kill_count }}. </p>
+
+		{% elif decision_group.scenario_type == 'I' %}
+
+			<p> Your total kill count is {{ request.session.kill_count }}. </p>
+
+		{% endif %}
+
+		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
 	</div>
 {% endblock %}

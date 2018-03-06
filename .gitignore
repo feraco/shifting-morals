@@ -1,2 +1,4 @@
 # Text backup files
 *.bak
+*.sqlite3
+polls/migrations/

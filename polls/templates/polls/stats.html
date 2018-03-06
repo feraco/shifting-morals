@@ -13,19 +13,9 @@
 	<div class="content-container container">
 		<h1 class="text-center p-4"> Your Stats </h1>
 
-		{% if request.session.num_decisions %}
-			<p> 
-				Your total kill count is {{ request.session.kill_count }}. <br>
-				You've killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
-				You kill {{ request.session.most_killed_age }}s the most often. <br>
-				{{ request.session.social_preference }} <br>
-			</p>
+		{% if request.session.num_decisions or request.session.group_num_decisions %}
 
-			<h4 class="text-center p-4"> Kills per Decision </h4>
-
-			<canvas id="myChart" width="500" height="400"></canvas>
-
-	        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+			<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 	        <script type="text/javascript" src="{% static 'polls/js/Chart.min.js' %}"></script>
 
 	        <script type="text/javascript">
@@ -42,22 +32,72 @@
 			    };
 			    xhr.send();
 			};
+			</script>
 
-			getJSON('{% url "polls:line_chart_json" %}',
-			function(err, data) {
-			  if (err !== null) {
-			    alert('Something went wrong: ' + err);
-			  } else {
-			    console.log(data)
-				obj = JSON.parse(data)
-			    new Chart(document.getElementById("myChart"), {
-					  type: 'line',
-					  data: obj
+			<p> 
+			{% if request.session.num_decisions %}
+					Your total kill count is {{ request.session.kill_count }}. <br>
+					You have killed {{ request.session.male_kc }} male(s) versus  {{ request.session.female_kc }} female(s). <br>
+					You kill {{ request.session.most_killed_age }}s the most often. <br>
+					{{ request.session.social_preference }} <br>
+			{% endif %}
+
+			{% if request.session.group_num_decisions %}
+					{{ request.session.confidence_preference }} <br>
+					Your total kill count in group scenarios is {{ request.session.group_kill_count }}. <br>
+					You have saved {{ request.session.lives_saved }} lives in group scenarios. <br>
+			{% endif %}
+
+			</p>
+
+			{% if request.session.num_decisions %}
+
+				<h4 class="text-center p-4"> Total Kills per Decision </h4>
+
+				<canvas id="myChart" width="500" height="400"></canvas>
+
+				<script type="text/javascript">
+				getJSON('{% url "polls:line_chart_json" %}',
+				function(err, data) {
+				  if (err !== null) {
+				    alert('Something went wrong: ' + err);
+				  } else {
+				    console.log(data)
+					obj = JSON.parse(data)
+				    new Chart(document.getElementById("myChart"), {
+						  type: 'line',
+						  data: obj
+					});
+				  }
 				});
-			  }
-			});
-			
-	        </script>
+				</script>
+
+			{% endif %}
+
+
+			{% if request.session.group_num_decisions %}
+
+				<h4 class="text-center p-4"> Total Kills per Group Decision </h4>
+
+				<canvas id="myChart2" width="500" height="400"></canvas>
+
+				<script type="text/javascript">
+				getJSON('{% url "polls:line_chart_json2" %}',
+				function(err, data) {
+				  if (err !== null) {
+				    alert('Something went wrong: ' + err);
+				  } else {
+				    console.log(data)
+					obj = JSON.parse(data)
+				    new Chart(document.getElementById("myChart2"), {
+						  type: 'line',
+						  data: obj
+					});
+				  }
+				});
+				</script>
+
+			{% endif %}
 
 		{% else %}
 			<p class="text-center"> 
@@ -68,7 +108,28 @@
 		<!-- {{ request.session.test }} <br> {{ request.session.test2 }} <br> -->
 		<!-- {{ request.session.decisions_range }} <br> {{ request.session.kill_list }} <br> -->
 
-		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
 		<br>
 	</div>
+
+	<div class="content-container container">
+
+		<h1 class="text-center p-4"> Everyone's Stats </h1>
+
+		<p>
+			Total number of decisions made: {{ view.stats.total_decisions }} <br>
+			Total kill count for individual decisions: {{ view.stats.kill_count }} <br>
+			Total kill count for large decisions: {{ view.stats.group_kill_count }} <br>
+			Total male kill count: {{ view.stats.male_kc }} <br>
+			Total female kill count: {{ view.stats.female_kc }} <br>
+			Total lives saved: {{ view.stats.lives_saved }} <br>
+			<br><br>
+			{{ view.stats.get_confidence_preference_display }} <br>
+			{{ view.stats.get_age_preference_display }} <br>
+			{{ view.stats.get_status_preference_display }} <br>
+		</p>
+
+	</div>
+
+	<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
+
 {% endblock %}

@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from .models import *
 
+class OutcomeInline(admin.TabularInline):
+    model = Outcome
+    extra = 0
+
 
 class PersonInline(admin.TabularInline):
     model = Person
@@ -14,12 +18,12 @@ class DecisionInline(admin.TabularInline):
 
 
 class DecisionAdmin(admin.ModelAdmin):
-    inlines = [PersonInline]
+    inlines = [PersonInline, OutcomeInline]
 
 
 class DecisionGroupAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['scenario_title', 'scenario_description']})    
+        (None,               {'fields': ['scenario_title', 'scenario_description', 'scenario_type']})    
     ]
     search_fields = ['scenario_title']
     inlines = [DecisionInline]

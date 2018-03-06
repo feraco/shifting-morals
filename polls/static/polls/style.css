@@ -10,14 +10,13 @@ a {
 	color: green;
 }
 
-.ding {
+.regular {
 	font-size: 16px !important;
 }
 
 /* Form Styles */
 /* Modified from Angela Velasquez */
 /* Copyright (c) 2018 by Angela Velasquez (https://codepen.io/AngelaVelasquez/pen/Eypnq) */
-/* TODO: Fix label opacity for mobile -- make it so it has no opacity but buttons instead? */
 
 label {
 	border: 0px solid rgba(10, 92, 15,0.8);
@@ -41,8 +40,8 @@ label:hover {
 
 input[type="radio"] {
 	opacity: 0;
-	width: 0;
-  	height: 0;
+	//width: 0;
+  	//height: 0;
   	position: absolute;
 }
 
@@ -54,4 +53,76 @@ input[type="radio"]:checked ~ label {
   	opacity: 1;
 	border: 0px solid rgba(10, 92, 15,0.8);
 	color: #0A5C0F;
+}
+
+/************/
+/* Modified from link below */
+/* Copyright (c) 2018 by Angela Velasquez (https://codepen.io/AngelaVelasquez/pen/Eypnq) */
+
+.choices ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.choices ul li {
+  position: relative;
+}
+
+.choices ul li label{
+  display: block;
+  position: relative;
+  font-weight: 300;
+  font-size: 1.35em;
+  padding: 10px 0 0 80px;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+}
+
+.choices ul li:hover label{
+	color: black;
+}
+
+.choices ul li .check{
+  display: block;
+  position: absolute;
+  border: 5px solid #AAAAAA;
+  border-radius: 100%;
+  height: 35px;
+  width: 35px;
+  top: 30px;
+  left: 20px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
+}
+
+.choices ul li:hover .check {
+  border: 5px solid grey;
+}
+
+.choices ul li .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 15px;
+  width: 15px;
+  top: 5px;
+  left: 5px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+.choices input[type=radio]:checked ~ .check {
+  border: 5px solid #0DFF92;
+}
+
+.choices input[type=radio]:checked ~ .check::before{
+  background: #0DFF92;
+}
+
+.choices input[type=radio]:checked ~ label{
+  color: #0A5C0F;
 }
