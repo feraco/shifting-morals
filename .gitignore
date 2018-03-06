@@ -2,3 +2,4 @@
 *.bak
 *.sqlite3
 polls/migrations/
+polls/__pycache__/
