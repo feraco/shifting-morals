@@ -287,7 +287,7 @@ def vote(request, decision_group_id):
 
             if statistics.status_total < 0:
                 statistics.status_preference = 'C'
-            elif statistics.age_total > 0:
+            elif statistics.status_total > 0:
                 statistics.status_preference = 'D'
             else:
                 statistics.status_preference = 'A'
