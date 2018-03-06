@@ -1,5 +1,6 @@
 # Text backup files
 *.bak
 *.sqlite3
-polls/migrations/
-polls/__pycache__/
+polls/migrations/*
+polls/__pycache__/*
+!polls/migrations/__init__.py
