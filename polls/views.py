@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
+from django.core import serializers
 
 from chartjs.views.lines import BaseLineChartView
 from chartjs.colors import next_color, COLORS
@@ -34,10 +35,6 @@ class ContactView(generic.TemplateView):
 
 class StatsView(generic.TemplateView):
     template_name = 'polls/stats.html'
-
-    #stat = Statistics.load()
-    #stat.group_kill_count += 1
-    #stat.save()
 
     def stats(self):
         return Statistics.load()
@@ -142,6 +139,8 @@ def vote(request, decision_group_id):
         selected_decision.votes += 1
 
         # Set variables that  need to be set each decision
+        request.session["who_died"] = []
+        request.session["description"] = selected_decision.description
         request.session["killed_bool"] = False  # If you kill any this decision
         request.session["killed"] = 0  # Refers to the number killed in this decision
 
@@ -218,6 +217,7 @@ def vote(request, decision_group_id):
                     request.session["kill_count"] += 1
                     request.session["killed_bool"] = True
                     request.session["age"].append(person.age)
+                    request.session["who_died"].append(1)
 
                     if person.age == 'C':
                         statistics.age_total -= 1
@@ -242,6 +242,9 @@ def vote(request, decision_group_id):
                     elif person.gender == 'F':
                         request.session["female_kc"] += 1
                         statistics.female_kc += 1
+
+                else:
+                    request.session["who_died"].append(0)
 
             # Post processing of deaths and other factors
 

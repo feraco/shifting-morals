@@ -12,10 +12,10 @@
 		<h1 class="text-center p-4 display-4"> Scenarios </h1>
 
 		<p class="text-justify">
-			Choose a scenario here. You can complete the scenarios in any order, and be sure to click on stats below after you've made a few decisions. The stats page will help you understand your choices and their outcomes.
+			Choose a scenario here. You can complete the scenarios in any order, and be sure to click on stats above after you've made a few decisions. The stats page will help you understand your choices and their outcomes.
 		</p>
 
-		<div class="row">
+		<!--<div class="row">
 	        <div class="col-4 mx-auto">
 
 				{% if decisions_list %}
@@ -32,8 +32,33 @@
 
 		<div class="text-center">
 			<a href="{% url 'polls:stats' %}"><button type="button" class="btn btn-success">Stats</button></a>
-		</div>
+		</div> 
 		
-		<br><br>
+		<br>--><br>
+
 	</div>
+
+	<div class="container">
+	      <div class="card-deck mb-3 text-center">
+	      {% for decision_group in decisions_list %}
+	        <div class="card mb-4 box-shadow">
+	          <div class="card-header">
+	            <h4 class="my-0 font-weight-normal">{{ decision_group.scenario_title }}</h4>
+	          </div>
+	          <div class="card-body">
+	            <p style="margin:10px;" class="text-left">{{ decision_group.scenario_short_description }}</p>
+	            <i class="fas fa-{{ decision_group.scenario_glyphicon }} fa-3x"></i><br><br>
+	            <div class="text-center">
+	            	<a href="{% url 'polls:detail' decision_group.id %}">
+	            		<button type="button" class="btn btn-success" style="width:25%;margin-bottom:10px;">Go</button>
+	            	</a>
+	            </div>
+	          </div>
+	        </div>
+	      {% endfor %}
+
+	      </div>
+
+	</div>
+
 {% endblock %}

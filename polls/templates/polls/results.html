@@ -1,4 +1,6 @@
 {% extends 'polls/base.html' %}
+{% load poll_extras %}
+
 
 {% block content %}
 	<nav aria-label="breadcrumb">
@@ -14,44 +16,118 @@
 		<h1 class="text-center p-4">{{ decision_group.scenario_title }}</h1>
 
 		<p>
-		{{ decision_group.scenario_description }}
+			{{ decision_group.scenario_description }}
 		</p>
+
+		<h2 class="text-center p-4 display-5 decorated decorated2"><span> Results </span></h2>
+
+		<strong>Outcome: </strong>
 
 		{% if decision_group.scenario_type == 'L' %}
 
-			<strong>Outcome: </strong>{{ request.session.outcome }}<br><br>
+			{{ request.session.outcome }}<br><br>
+
+			<p>
+				<strong>
+					{% if request.session.killed_bool %} 
+						
+						{% if request.session.killed == 1 %}
+							{{ request.session.killed }} person died.
+						{% else %}
+							 {{ request.session.killed }} people died.
+						{% endif %}
+						You saved {{ request.session.saved }} lives. 
+					{% else %} 
+						No one died. Hooray!
+					{% endif %}
+				</strong>
+				Your total group kill count is {{ request.session.group_kill_count }}.
+			</p>
+
+		{% elif decision_group.scenario_type == 'I' %}
+
+			{% for decision in decision_group.decision_set.all %}
+				{% if decision.description == request.session.description %}
+					{{ request.session.description }}<br><br>
+
+					<p>
+						<strong>
+							{% if request.session.killed_bool %} 
+								{% if request.session.killed == 1 %}
+									{{ request.session.killed }} person died.
+								{% else %}
+									 {{ request.session.killed }} people died.
+								{% endif %}
+							{% else %} 
+								No one died. Hooray!
+							{% endif %}
+						</strong>
+						Your total kill count is {{ request.session.kill_count }}.
+					</p>
+
+					<p class="text-left">
+					    <div class="container">
+						  	<div class="row">
+							    <div class="col-5-sm">
+							      	<div class="row">	
+									    {% for person in decision.person_set.all%}
+									    		<div class="col-sm regular" style="width:100px;">
+									    			<div class="text-center people">
+									    				<div class="fa-4x">
+												  			<span class="fa-layers fa-fw">
+											    			{% if person.age == 'C' %}
+											    				<i class="fas fa-child"></i>
+											    			{% elif person.status == 'D' %}
+											    				<i class="fas fa-user-md"></i>
+											    			{% elif person.age == 'O' %}
+											    				<i class="fas fa-blind"></i>
+											    			{% elif person.status == 'C' %}
+											    				<i class="fas fa-user-secret"></i>
+													    	{% elif person.gender == 'M' %}
+													    		<i class="fas fa-male"></i>
+													    	{% elif person.gender == 'F' %}
+													    		<i class="fas fa-female"></i>
+													    	{% endif %}
+
+													    	{% if request.session.who_died|index:forloop.counter0  %}
+													    		<i class="fas fa-times" data-fa-transform="shrink-6" style="color:red;"></i>
+													    	{% else %}
+													    		<i class="fas fa-check" data-fa-transform="shrink-6" style="color:green;"></i>
+													    	{% endif %}
+												  			</span>
+														</div>
+											    	</div>
+											    	<div style="color:#0A5C0F">
+												    	<br>
+													    {{ person.get_gender_display }}
+													    <br>
+													    {{ person.get_age_display }}
+													    <br>
+													    {{ person.get_probability_display }}
+													    <br>
+													    {{ person.get_status_display }}
+												    </div>
+										    	</div>
+									    {% endfor %}
+								    </div>
+							    </div>
+							</div>
+						</div>
+					</p>
+
+				{% endif %}
+
+			{% endfor %}
 
 		{% endif %}
 
-		{% if request.session.killed_bool %} 
-			<p> Somebody died. 
-			{% if request.session.killed == 1 %}
-				{{ request.session.killed }} person died. </p>
-			{% else %}
-				 {{ request.session.killed }} people died. </p>
-			{% endif %}
-			{% if decision_group.scenario_type == 'L' %}
-				<p> You saved {{ request.session.saved }} lives. </p>
-			{% endif %}
-		{% else %} 
-			<p> No one died. Hooray! </p>
-		{% endif %}
+		<h2 class="text-center p-4 display-5 decorated"><span> Consensus Results </span></h2>
 
 		<ul>
 		{% for decision in decision_group.decision_set.all %}
 		    <li>{{ decision.description }} -- {{ decision.votes }} vote{{ decision.votes|pluralize }}</li>
 		{% endfor %}
 		</ul>
-
-		{% if decision_group.scenario_type == 'L' %}
-
-			<p> Your total group kill count is {{ request.session.group_kill_count }}. </p>
-
-		{% elif decision_group.scenario_type == 'I' %}
-
-			<p> Your total kill count is {{ request.session.kill_count }}. </p>
-
-		{% endif %}
 
 		<div class="text-center"><a href="{% url 'polls:decision' %}">Back to scenarios</a></div>
 	</div>

@@ -6,7 +6,12 @@ from django.utils import timezone
 
 class DecisionGroup(models.Model):
     scenario_title = models.CharField(max_length=400)
-    scenario_description = models.CharField(max_length=400, default=None)
+    scenario_description = models.CharField(max_length=400, default="None")
+    scenario_short_description = models.CharField(max_length=125, default="None")
+
+    # Glyphicon to be displayed on decision page
+    # From https://fontawesome.com/icons?d=gallery&m=free
+    scenario_glyphicon = models.CharField(max_length=50, default="user")
 
     TYPES = (
     ('I', 'Individual'),
@@ -193,7 +198,7 @@ class Statistics(SingletonModel):
     AGE_PREF = (
     ('C', 'Children are valued the most by the majority of people.'),
     ('A', 'Adults are valued the most by the majority of people.'),
-    ('O', 'The eldery are valued the most by the majority of people.')
+    ('O', 'The elderly are valued the most by the majority of people.')
     )
 
     age_preference = models.CharField(

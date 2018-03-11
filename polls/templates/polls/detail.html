@@ -31,7 +31,10 @@
 	        <div class="col-2-sm mx-auto text-left" style="color:#0A5C0F;">
 	            <div class="text-center">
 	            <strong style="color:#0A5C0F;">Legend</strong><br>
+	            <!-- 
 	            <img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60" style="padding-left: 7px;"> <br>
+	            -->
+	            <i class="fas fa-male fa-3x" style="color:#2a2a2a;"></i>
 	            </div>
 				Gender <br>
 				Age <br>
@@ -55,6 +58,8 @@
 	        </div>
 	    </div> -->
 
+	    <div class="text-center"><i class="fas fa-{{ decision_group.scenario_glyphicon }} fa-5x"></i></div>
+
 	{% else %}
 
 		<strong>Error with scenario type</strong>
@@ -69,97 +74,107 @@
 
 	<div class="choices">
 		<ul>
-		<form action="{% url 'polls:vote' decision_group.id %}" method="post">
-		{% csrf_token %}
-		{% for decision in decision_group.decision_set.all %}
-			<li> <!-- li goes here -->
-				<div class="form__answer"> 
-					<hr>
-				    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}"/>
-				    <!-- Readd {{forloop.counter}}. in front of description? Not sure what looks better -->
-				    <label for="decision{{ forloop.counter }}" class="lead"> {{ decision.description }}
-				    <p class="text-left">
-					    <div class="container">
-						  <div class="row">
+			<form action="{% url 'polls:vote' decision_group.id %}" method="post">
+			{% csrf_token %}
+			{% for decision in decision_group.decision_set.all %}
+				<li> <!-- li goes here -->
+					<div class="form__answer"> 
+						<hr>
+					    <input type="radio" name="decision" id="decision{{ forloop.counter }}" value="{{ decision.id }}"/>
+					    <!-- Readd {{forloop.counter}}. in front of description? Not sure what looks better -->
+					    <label for="decision{{ forloop.counter }}" class="lead"> {{ decision.description }}
+					    <p class="text-left">
+						    <div class="container">
+							  <div class="row">
 
-						  	{% if decision_group.scenario_type == 'I' %}
+							  	{% if decision_group.scenario_type == 'I' %}
 
-							  	<!-- old color was #006666 -->
-							  	<strong style="color:#0A5C0F;" class="regular font-weight-bold">Who could die:</strong>
-							    <div class="col-5-sm">
-							      	<div class="row">	
-									    {% for person in decision.person_set.all %}
-									    		<div class="col-sm regular" style="color:#0A5C0F;"> 
-											    	{% if person.gender == 'M' %}
-												    	<img src="{% static 'polls/images/man_small.png' %}" alt="man" height="60">
-											    	{% elif person.gender == 'F' %} 
-												    	<img src="{% static 'polls/images/woman_small.png' %}" alt="man" height="60">
-											    	{% endif %}
-											    	<br>
-												    {{ person.get_gender_display }}
-												    <br>
-												    {{ person.get_age_display }}
-												    <br>
-												    {{ person.get_probability_display }}
-												    <br>
-												    {{ person.get_status_display }}
-										    	</div>
-									    {% endfor %}
+								  	<!-- old color was #006666 -->
+								  	<strong style="color:#0A5C0F;" class="regular font-weight-bold">Who could die:</strong>
+								    <div class="col-5-sm">
+								      	<div class="row">	
+										    {% for person in decision.person_set.all %}
+										    		<div class="col-sm regular" style="width:100px;">
+										    			<div class="text-center people">
+											    			{% if person.age == 'C' %}
+											    				<i class="fas fa-child fa-3x"></i>
+											    			{% elif person.status == 'D' %}
+											    				<i class="fas fa-user-md fa-3x"></i>
+											    			{% elif person.age == 'O' %}
+											    				<i class="fas fa-blind fa-3x"></i>
+											    			{% elif person.status == 'C' %}
+											    				<i class="fas fa-user-secret fa-3x"></i>
+													    	{% elif person.gender == 'M' %}
+													    		<i class="fas fa-male fa-3x"></i>
+													    	{% elif person.gender == 'F' %}
+													    		<i class="fas fa-female fa-3x"></i>
+													    	{% endif %}
+												    	</div>
+												    	<div style="color:#0A5C0F">
+												    	<br>
+													    {{ person.get_gender_display }}
+													    <br>
+													    {{ person.get_age_display }}
+													    <br>
+													    {{ person.get_probability_display }}
+													    <br>
+													    {{ person.get_status_display }}</div>
+											    	</div>
+										    {% endfor %}
+									    </div>
 								    </div>
-							    </div>
 
-						  	{% elif decision_group.scenario_type == 'L' %}
+							  	{% elif decision_group.scenario_type == 'L' %}
 
-						  		<strong style="color:#0A5C0F;" class="regular font-weight-bold">Possible Outcomes:</strong>
-						  		<div class="col-sm">
-							      	<div class="row">	
-									    {% for outcome in decision.outcome_set.all %}
-									    		<div class="col-sm regular" style="color:#0A5C0F;"> 
-											    	<strong class="font-weight-bold">{{ outcome.outcome_description }}</strong>
-											    	<hr>
-											    	{% if outcome.predicted_num_deaths > 100000 %}
-											    		{{ outcome.predicted_num_deaths |stringformat:".1e" }} deaths predicted
-											    	{% else %}
-											    		{{ outcome.predicted_num_deaths }} deaths predicted
-													{% endif %}
-											    	<br><br>
-											    	{{ outcome.get_confidence_display }} confidence in prediction
-											    	<br><br>
-											    	{% if outcome.min_value > 100000 %}
-											    		{{ outcome.min_value |stringformat:".1e"  }} - {{ outcome.max_value | stringformat:".1e"  }} possible deaths
-											    	{% else %}
-											    		{{ outcome.min_value  }} - {{ outcome.max_value  }} possible deaths
-											    	{% endif %}
-											    	<br><br>
-											    	{{ outcome.likelihood }}% Likelihood
-											    	<br><br>
-										    	</div>
-									    {% endfor %}
+							  		<strong style="color:#0A5C0F;" class="regular font-weight-bold">Possible Outcomes:</strong>
+							  		<div class="col-sm">
+								      	<div class="row">	
+										    {% for outcome in decision.outcome_set.all %}
+										    		<div class="col-sm regular"> 
+												    	<strong class="font-weight-bold">{{ outcome.outcome_description }}</strong>
+												    	<hr>
+												    	{% if outcome.predicted_num_deaths > 100000 %}
+												    		{{ outcome.predicted_num_deaths |stringformat:".1e" }} deaths predicted
+												    	{% else %}
+												    		{{ outcome.predicted_num_deaths }} deaths predicted
+														{% endif %}
+												    	<br><br>
+												    	{{ outcome.get_confidence_display }} confidence in prediction
+												    	<br><br>
+												    	{% if outcome.min_value > 100000 %}
+												    		{{ outcome.min_value |stringformat:".1e"  }} - {{ outcome.max_value | stringformat:".1e"  }} possible deaths
+												    	{% else %}
+												    		{{ outcome.min_value  }} - {{ outcome.max_value  }} possible deaths
+												    	{% endif %}
+												    	<br><br>
+												    	{{ outcome.likelihood }}% Likelihood
+												    	<br><br>
+											    	</div>
+										    {% endfor %}
+									    </div>
 								    </div>
-							    </div>
 
-						  	{% else %}
+							  	{% else %}
 
-						  		<strong>Error with scenario type</strong>
+							  		<strong>Error with scenario type</strong>
 
-						  	{% endif %}
+							  	{% endif %}
 
-						  </div>
-						</div>
-				    </p>
-				    </label>
-				    <div class="check"></div>
-			    </div>
-		    </li>
-		{% endfor %}
+							  </div>
+							</div>
+					    </p>
+					    </label>
+					    <div class="check"></div>
+				    </div>
+			    </li>
+			{% endfor %}
 
-		<br>
-		<div class="text-center"><input type="submit" value="Decide" class="btn btn-success"/></div>
-		</form>
-		
-
+			<br>
+			<div class="text-center"><input type="submit" value="Decide" class="btn btn-success"/></div>
+			</form>
 		<ul>
 	</div>
 
 	<br/>
+
 {% endblock %}
