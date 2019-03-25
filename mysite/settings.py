@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '0a23d#qn!tq9of7=+p#&8y4kycskb^
 # DEBUG = True
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['shifting-morals.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['liamr.herokuapp.com','127.0.0.1']
 
 
 # Application definition
